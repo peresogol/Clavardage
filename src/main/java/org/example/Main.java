@@ -26,10 +26,12 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+        /*
         echo = client.sendEcho("hello server");
         System.out.println(echo);
         echo = client.sendEcho("server is working");
         System.out.println(echo);
+        */
 
         client.close();
 

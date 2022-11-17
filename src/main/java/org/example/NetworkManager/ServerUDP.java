@@ -40,4 +40,3 @@ public class ServerUDP extends Thread {
         //socket.close();
     }
 }
-
