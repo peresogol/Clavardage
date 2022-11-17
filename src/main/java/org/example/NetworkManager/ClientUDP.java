@@ -2,6 +2,7 @@ package org.example.NetworkManager;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Scanner;
 
 public class ClientUDP {
     private DatagramSocket socket;
@@ -14,27 +15,46 @@ public class ClientUDP {
         address = InetAddress.getByName("localhost");
     }
 
-    public String sendEcho(String msg) {
-        buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+    public static void main(String[] args) {
+        String echo;
+        ClientUDP client;
+        Scanner sc= new Scanner(System.in); //System.in is a standard input stream
 
         try {
-            socket.send(packet);
-        } catch (IOException e) {
+            client = new ClientUDP();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        packet = new DatagramPacket(buf, buf.length);
+        System.out.print("Enter a message: ");
 
-        try {
-            socket.receive(packet);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String str= sc.nextLine();
 
-        String received = new String(packet.getData(), 0, packet.getLength());
-        return received;
+        echo = client.send(str);
+        System.out.println(echo);
     }
+
+        public String send(String msg) {
+            buf = msg.getBytes();
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+
+            try {
+                socket.send(packet);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            packet = new DatagramPacket(buf, buf.length);
+
+            try {
+                socket.receive(packet);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            String received = new String(packet.getData(), 0, packet.getLength());
+            return received;
+        }
 
     public void close() {
         socket.close();

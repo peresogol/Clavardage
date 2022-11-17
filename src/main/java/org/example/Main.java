@@ -3,8 +3,6 @@ package org.example;
 import org.example.NetworkManager.ClientUDP;
 import org.example.NetworkManager.ServerUDP;
 
-import java.net.SocketException;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -14,7 +12,7 @@ public class Main {
 
         try {
             serv = new ServerUDP();
-        } catch (SocketException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -26,12 +24,10 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        /*
-        echo = client.sendEcho("hello server");
+        echo = client.send("hello server");
         System.out.println(echo);
-        echo = client.sendEcho("server is working");
+        echo = client.send("server is working");
         System.out.println(echo);
-        */
 
         client.close();
 
