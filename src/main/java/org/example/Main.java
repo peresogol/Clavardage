@@ -18,7 +18,7 @@ public class Main {
 
         serv.start();
 
-        try {
+       /* try {
             client = new ClientUDP();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -30,6 +30,6 @@ public class Main {
         System.out.println(echo);
 
         client.close();
-
+*/
     }
 }
