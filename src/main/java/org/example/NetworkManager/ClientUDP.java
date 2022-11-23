@@ -7,12 +7,13 @@ import java.util.Scanner;
 public class ClientUDP {
     private DatagramSocket socket;
     private InetAddress address;
-
+    private int port;
     private byte[] buf;
 
-    public ClientUDP() throws SocketException, UnknownHostException {
-        socket = new DatagramSocket();
-        address = InetAddress.getByName("localhost");
+    public ClientUDP(int port) throws SocketException, UnknownHostException {
+        this.socket = new DatagramSocket();
+        this.port = port;
+        this.address = InetAddress.getByName("localhost");
     }
 
     public void start() {
@@ -21,28 +22,27 @@ public class ClientUDP {
 
         Scanner sc= new Scanner(System.in); //System.in is a standard input stream
 
-        try {
+        /*try {
             client = new ClientUDP();
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
 
         while(true) {
             System.out.print("Enter a message: ");
             String str= sc.nextLine();
-
-            echo = client.send(str);
+            /*echo = */this.send(str);
         }
     }
 
-        public String send(String msg) {
+        public void /*String*/ send(String msg) {
             buf = msg.getBytes();
             Scanner sc= new Scanner(System.in); //System.in is a standard input stream
-            System.out.print("Enter an emission port: ");
-            String port = sc.nextLine();
+           // System.out.print("Enter an emission port: ");
+           // String port = sc.nextLine();
 
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Integer.parseInt(port));
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
 
 
 
@@ -52,7 +52,7 @@ public class ClientUDP {
                 throw new RuntimeException(e);
             }
 
-            packet = new DatagramPacket(buf, buf.length);
+            /*packet = new DatagramPacket(buf, buf.length);
 
             try {
                 socket.receive(packet);
@@ -61,7 +61,7 @@ public class ClientUDP {
             }
 
             String received = new String(packet.getData(), 0, packet.getLength());
-            return received;
+            return received;*/
         }
 
 

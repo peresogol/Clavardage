@@ -15,7 +15,7 @@ public class Main {
             public void run() {
                 ClientUDP c;
                 try {
-                    c = new ClientUDP();
+                    c = new ClientUDP(4444);
                     c.start();
                 } catch (SocketException e) {
                     e.printStackTrace();
@@ -30,28 +30,13 @@ public class Main {
         String echo;
 
         try {
-            serv = new ServerUDP();
+            serv = new ServerUDP(4443);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-
         serv.start();
 
         t.start();
-    /*
-        try {
-            client = new ClientUDP();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
 
-        echo = client.send("hello server");
-        System.out.println(echo);
-        echo = client.send("server is working");
-        System.out.println(echo);
-
-        client.close();
-    */
     }
 }

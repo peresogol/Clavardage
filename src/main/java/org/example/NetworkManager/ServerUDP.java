@@ -10,16 +10,12 @@ public class ServerUDP extends Thread {
 
     private DatagramSocket socket;
     private byte[] buf = new byte[256];
+    private String received;
+    private int port;
 
-
-
-    public ServerUDP() throws SocketException {
-
-        Scanner sc= new Scanner(System.in); //System.in is a standard input stream
-        System.out.print("Enter an reception port: ");
-        String port = sc.nextLine();
-
-        socket = new DatagramSocket(Integer.parseInt(port));
+    public ServerUDP(int port) throws SocketException {
+        this.port = port;
+        this.socket = new DatagramSocket(port);
     }
 
     public void run() {
@@ -36,16 +32,14 @@ public class ServerUDP extends Thread {
 
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
-            packet = new DatagramPacket(buf, buf.length, address, port);
-            String received = new String(packet.getData(), 0, packet.getLength());
-            System.out.println(received);
+            received = new String(packet.getData(), 0, packet.getLength());
+            System.out.println("Message recu : " + received);
 
-            try {
-                socket.send(packet);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
         //socket.close();
+    }
+
+    public String getReceived(){
+        return received;
     }
 }

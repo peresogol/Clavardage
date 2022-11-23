@@ -12,8 +12,8 @@ public class UDPTests {
 
     @Before
     public void initTestEnvironment() throws Exception {
-        client = new ClientUDP();
-        serv = new ServerUDP();
+        client = new ClientUDP(4444);
+        serv = new ServerUDP(4444);
     }
     @Test
     public void testEnvoyerRecevoir() throws Exception {
