@@ -7,7 +7,8 @@ import java.util.Scanner;
 public class ServerUDP extends Thread {
 
     private DatagramSocket socket;
-    private byte[] buf = new byte[256];
+    private byte[] buffer = new byte[256];
+    private String received;
     public InetAddress address;
     public int port;
     public ServerUDP() throws SocketException {
@@ -33,6 +34,24 @@ public class ServerUDP extends Thread {
 
     public void run() {
 
+        DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, port);
+
+        //while (true) {
+            try {
+                socket.receive(packet);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            setReceived(new String(buffer, 0, packet.getLength()));
+            packet.setLength(buffer.length);
+            System.out.println(received);
+        //}
+
+
+
+
+        /*
+
         while (true) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
@@ -44,15 +63,23 @@ public class ServerUDP extends Thread {
             address = packet.getAddress();
             port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
-            String received = new String(packet.getData(), 0, packet.getLength());
+            received = new String(packet.getData(), 0, packet.getLength());
             System.out.println(received);
-/*
+
             try {
                 socket.send(packet);
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }*/
-        }
+            }
+        }*/
         //socket.close();
+    }
+
+    public String getReceived() {
+        return this.received;
+    }
+
+    public String setReceived(String r) {
+        return this.received = r;
     }
 }

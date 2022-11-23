@@ -3,6 +3,7 @@ import org.example.NetworkManager.ServerUDP;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class UDPTests {
 
@@ -15,9 +16,12 @@ public class UDPTests {
         serv = new ServerUDP();
     }
     @Test
-    public void test() throws Exception {
+    public void testEnvoyerRecevoir() throws Exception {
         serv.start();
-        assertEquals("BONJOUR LE MONDE", client.send("BONJOUR LE MONDE"));
+        client.send("BONJOUR LE MONDE");
+        Thread.sleep(10);
+        String tmp = serv.getReceived();
+        assertEquals("BONJOUR LE MONDE", tmp);
         client.close();
     }
 }

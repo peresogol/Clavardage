@@ -45,14 +45,14 @@ public class ClientUDP {
 
             packet = new DatagramPacket(buf, buf.length);
 
-            try {
+            /*try {
                 socket.receive(packet);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-            String received = new String(buf, 0, packet.getLength());
-            return received;
+            String received = new String(buf, 0, packet.getLength());*/
+            return null;
         }
 
     public void close() {
