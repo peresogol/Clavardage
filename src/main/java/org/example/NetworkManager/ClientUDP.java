@@ -29,14 +29,13 @@ public class ClientUDP {
         System.out.print("Enter a message: ");
 
         String str= sc.nextLine();
-
         echo = client.send(str);
         System.out.println(echo);
     }
 
         public String send(String msg) {
             buf = msg.getBytes();
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+            DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), address, 4445);
 
             try {
                 socket.send(packet);
@@ -52,7 +51,7 @@ public class ClientUDP {
                 throw new RuntimeException(e);
             }
 
-            String received = new String(packet.getData(), 0, packet.getLength());
+            String received = new String(buf, 0, packet.getLength());
             return received;
         }
 

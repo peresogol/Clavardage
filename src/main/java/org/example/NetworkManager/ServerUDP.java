@@ -27,6 +27,10 @@ public class ServerUDP extends Thread {
         }
     }
 
+    public void close() {
+        socket.close();
+    }
+
     public void run() {
 
         while (true) {
