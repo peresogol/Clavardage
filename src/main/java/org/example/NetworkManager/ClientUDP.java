@@ -15,9 +15,10 @@ public class ClientUDP {
         address = InetAddress.getByName("localhost");
     }
 
-    public static void main(String[] args) {
+    public void start() {
         String echo;
         ClientUDP client;
+
         Scanner sc= new Scanner(System.in); //System.in is a standard input stream
 
         try {
@@ -26,17 +27,24 @@ public class ClientUDP {
             throw new RuntimeException(e);
         }
 
-        System.out.print("Enter a message: ");
 
-        String str= sc.nextLine();
+        while(true) {
+            System.out.print("Enter a message: ");
+            String str= sc.nextLine();
 
-        echo = client.send(str);
-        System.out.println(echo);
+            echo = client.send(str);
+        }
     }
 
         public String send(String msg) {
             buf = msg.getBytes();
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+            Scanner sc= new Scanner(System.in); //System.in is a standard input stream
+            System.out.print("Enter an emission port: ");
+            String port = sc.nextLine();
+
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Integer.parseInt(port));
+
+
 
             try {
                 socket.send(packet);
@@ -55,6 +63,7 @@ public class ClientUDP {
             String received = new String(packet.getData(), 0, packet.getLength());
             return received;
         }
+
 
     public void close() {
         socket.close();

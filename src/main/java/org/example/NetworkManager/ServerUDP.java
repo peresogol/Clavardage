@@ -1,18 +1,30 @@
 package org.example.NetworkManager;
 
+import com.sun.jdi.IntegerValue;
+
 import java.io.IOException;
 import java.net.*;
+import java.util.Scanner;
 
 public class ServerUDP extends Thread {
 
     private DatagramSocket socket;
     private byte[] buf = new byte[256];
 
+
+
     public ServerUDP() throws SocketException {
-        socket = new DatagramSocket(4445);
+
+        Scanner sc= new Scanner(System.in); //System.in is a standard input stream
+        System.out.print("Enter an reception port: ");
+        String port = sc.nextLine();
+
+        socket = new DatagramSocket(Integer.parseInt(port));
     }
 
     public void run() {
+
+        System.out.println("Server launched.");
 
         while (true) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);

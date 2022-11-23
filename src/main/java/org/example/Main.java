@@ -3,10 +3,29 @@ package org.example;
 import org.example.NetworkManager.ClientUDP;
 import org.example.NetworkManager.ServerUDP;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
+
 public class Main {
 
     public static void main(String[] args) {
-        ClientUDP client;
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ClientUDP c;
+                try {
+                    c = new ClientUDP();
+                    c.start();
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         ServerUDP serv;
         String echo;
 
@@ -16,8 +35,11 @@ public class Main {
             throw new RuntimeException(e);
         }
 
+
         serv.start();
 
+        t.start();
+    /*
         try {
             client = new ClientUDP();
         } catch (Exception e) {
@@ -30,6 +52,6 @@ public class Main {
         System.out.println(echo);
 
         client.close();
-
+    */
     }
 }
