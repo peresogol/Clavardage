@@ -1,19 +1,16 @@
 package org.example.NetworkManager;
 
-import com.sun.jdi.IntegerValue;
-
 import java.io.IOException;
 import java.net.*;
-import java.util.Scanner;
 
-public class ServerUDP extends Thread {
+public class ReceiveUDP extends Thread {
 
     private DatagramSocket socket;
     private byte[] buf = new byte[256];
     private String received;
     private int port;
 
-    public ServerUDP(int port) throws SocketException {
+    public ReceiveUDP(int port) throws SocketException {
         this.port = port;
         this.socket = new DatagramSocket(port);
     }

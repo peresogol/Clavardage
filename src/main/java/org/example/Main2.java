@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.NetworkManager.ClientUDP;
-import org.example.NetworkManager.ServerUDP;
+import org.example.NetworkManager.SendUDP;
+import org.example.NetworkManager.ReceiveUDP;
 
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -13,9 +13,9 @@ public class Main2 {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                ClientUDP c;
+                SendUDP c;
                 try {
-                    c = new ClientUDP(4443);
+                    c = new SendUDP(4443);
                     c.start();
                 } catch (SocketException e) {
                     e.printStackTrace();
@@ -26,11 +26,11 @@ public class Main2 {
         });
 
 
-        ServerUDP serv;
+        ReceiveUDP serv;
         String echo;
 
         try {
-            serv = new ServerUDP(4444);
+            serv = new ReceiveUDP(4444);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
