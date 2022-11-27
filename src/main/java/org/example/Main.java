@@ -1,42 +1,18 @@
 package org.example;
 
-import org.example.NetworkManager.SendUDP;
-import org.example.NetworkManager.ReceiveUDP;
-
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import org.example.NetworkManager.ClientUDP;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SendUDP c;
-                try {
-                    c = new SendUDP(4444);
-                    c.start();
-                } catch (SocketException e) {
-                    e.printStackTrace();
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-        ReceiveUDP serv;
-        String echo;
-
+        ClientUDP c = new ClientUDP();
+        c.sendBroadcast("TEST msg accentué");
         try {
-            serv = new ReceiveUDP(4443);
-        } catch (Exception e) {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        serv.start();
-
-        t.start();
-
+        c.sendBroadcast("TEST msg accentué 2");
     }
 }
