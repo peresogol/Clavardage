@@ -4,15 +4,15 @@ import java.net.*;
 import java.util.*;
 
 public class ClientUDP {
-    private DatagramSocket socket;
+    private static DatagramSocket socket;
 
     /*  Envoie la chaine de caractères broadcastMessage en broadcast sur toutes les adresses réseaux
      *  présentes dans la liste addressList, renvoyée par la fonction getBroadcastAddress()
      */
-    public void sendBroadcast(String broadcastMessage) {
+    public static void sendBroadcast(String broadcastMessage) {
         List<InetAddress> addressList = new ArrayList<>();
         try {
-            addressList = this.getBroadcastAddress();
+            addressList = getBroadcastAddress();
             socket = new DatagramSocket();
             socket.setBroadcast(true);
 
@@ -31,7 +31,7 @@ public class ClientUDP {
     /* Récupère les adresses des réseaux auquel est connecté l'hôte
      * Retourne une liste contenant ces adresses
      */
-    public List<InetAddress> getBroadcastAddress() throws SocketException {
+    private static List<InetAddress> getBroadcastAddress() throws SocketException {
         List<InetAddress> broadcastList = new ArrayList<>();
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {

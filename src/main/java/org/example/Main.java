@@ -4,8 +4,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ThreadManager n = new ThreadManager();
-        n.start();
+        ThreadManager t = new ThreadManager();
+        t.start();
 
         /*
         ClientUDP c = new ClientUDP();

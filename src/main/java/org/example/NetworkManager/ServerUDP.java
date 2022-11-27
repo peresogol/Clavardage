@@ -37,7 +37,16 @@ public class ServerUDP extends Thread {
 
     private void handlePacket(DatagramPacket packet) {
         String received = new String(packet.getData(), 0, packet.getLength());
-        System.out.println("Message recu : " + received);
+        switch (received){
+            case "AreYouOk":
+                NetworkManager.respondToNetworkDiscovery();
+                break;
+            case "YesIAm":
+                //TODO maj db
+                break;
+            default:
+                System.out.println("Error");
+        }
     }
 
 }
