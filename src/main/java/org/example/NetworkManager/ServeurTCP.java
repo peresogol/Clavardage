@@ -1,64 +1,46 @@
 package org.example.NetworkManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
 
-public class ServeurTCP {
+public class ServeurTCP extends Thread {
 
-    public static void main(String[] test) {
+    private ServerSocket serveurSock;
+    private Socket sock;
 
-        final ServerSocket serveurSocket ;
-        final Socket clientSocket ;
-        final BufferedReader in;
-        final PrintWriter out;
-        final Scanner sc=new Scanner(System.in);
+    public ServeurTCP(Socket socket, ServerSocket serveurSocket) {
+        this.sock = socket;
+        this.serveurSock = serveurSocket;
+    }
 
+    public void run() {
+        PrintWriter out;
+        BufferedReader in;
+        String msg;
         try {
-            serveurSocket = new ServerSocket(5000);
-            clientSocket = serveurSocket.accept();
-            out = new PrintWriter(clientSocket.getOutputStream());
-            in = new BufferedReader (new InputStreamReader (clientSocket.getInputStream()));
-            Thread envoi= new Thread(new Runnable() {
-                String msg;
-                @Override
-                public void run() {
-                    while(true){
-                        msg = sc.nextLine();
-                        out.println(msg);
-                        out.flush();
-                    }
-                }
-            });
-            envoi.start();
+            in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
+            msg = in.readLine();
+            while(msg!=null){
+                System.out.println("Client sends : "+msg);
+                msg = in.readLine();
+            }
+            System.out.println("Message Received: " + msg);
 
-            Thread recevoir= new Thread(new Runnable() {
-                String msg ;
-                @Override
-                public void run() {
-                    try {
-                        msg = in.readLine();
-                        while(msg!=null){
-                            System.out.println("Client : "+msg);
-                            msg = in.readLine();
-                        }
-                        System.out.println("Client déconecté");
-                        out.close();
-                        clientSocket.close();
-                        serveurSocket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            recevoir.start();
-        }catch (IOException e) {
-            e.printStackTrace();
+        /*
+        Reponse :
+
+        out = new PrintWriter(this.sock.getOutputStream());
+        out.println(msg);
+        out.flush();
+        */
+            //ois.close();
+            //oos.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+        //sock.close();
     }
 }

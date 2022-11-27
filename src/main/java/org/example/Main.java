@@ -1,11 +1,13 @@
 package org.example;
 
-import org.example.NetworkManager.ClientUDP;
-
 public class Main {
 
     public static void main(String[] args) {
 
+        ThreadManager n = new ThreadManager();
+        n.start();
+
+        /*
         ClientUDP c = new ClientUDP();
         c.sendBroadcast("TEST msg accentué");
         try {
@@ -14,5 +16,6 @@ public class Main {
             throw new RuntimeException(e);
         }
         c.sendBroadcast("TEST msg accentué 2");
+         */
     }
 }
