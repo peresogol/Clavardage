@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Database.SetupDatabase;
 import org.example.NetworkManager.ClientUDP;
 
 public class AppClient {
