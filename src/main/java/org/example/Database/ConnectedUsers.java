@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 public class ConnectedUsers {
 
+    // TOUT MODIFIER POUR REMPLACER LISTE PAR HASHMAP AVEC CODE ID <=> USERNAME
     private LinkedList<String> connectedUsers;
 
     public ConnectedUsers() {
@@ -33,6 +34,9 @@ public class ConnectedUsers {
         return this.connectedUsers.contains(username);
     }
 
+    public void changeUsername(String oldUsername, String newUsername) {
+
+    }
 
 }
 
