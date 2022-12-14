@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Managers;
 
 import org.example.NetworkManager.ServeurTCP;
 

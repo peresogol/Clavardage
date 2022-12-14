@@ -23,7 +23,7 @@ public class ServeurTCP extends Thread {
             in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
             msg = in.readLine();
             while(msg!=null){
-                System.out.println("Client sends : "+msg);
+                System.out.println("AppClient sends : "+msg);
                 msg = in.readLine();
             }
             System.out.println("Message Received: " + msg);

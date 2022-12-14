@@ -1,5 +1,6 @@
 package org.example.NetworkManager;
 
+import java.io.IOException;
 import java.net.*;
 import java.util.*;
 
@@ -26,7 +27,9 @@ public class ClientUDP {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        //waitForResponse();
     }
+
 
     /* Récupère les adresses des réseaux auquel est connecté l'hôte
      * Retourne une liste contenant ces adresses
@@ -42,6 +45,19 @@ public class ClientUDP {
             networkInterface.getInterfaceAddresses().stream().map(a -> a.getBroadcast()).filter(Objects::nonNull).forEach(broadcastList::add);
         }
         return broadcastList;
+    }
+
+    private static void waitForResponse() {
+        byte[] buf = new byte[1024];
+        DatagramSocket socket = null;
+        try {
+            socket = new DatagramSocket(5555);
+            DatagramPacket packet;
+            packet = new DatagramPacket(buf, buf.length);
+            socket.receive(packet);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void close() {

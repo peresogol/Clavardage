@@ -2,12 +2,15 @@ package org.example.NetworkManager;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.function.Consumer;
 
 public class ServerUDP extends Thread {
     private byte[] buf = new byte[1024];
     private int port;
+    private Consumer<DatagramPacket> handler;
 
-    public ServerUDP(int port)  {
+    public ServerUDP(int port, Consumer<DatagramPacket> handler)  {
+        this.handler = handler;
         this.port = port;
     }
 
@@ -30,11 +33,13 @@ public class ServerUDP extends Thread {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            handlePacket(packet);
+            this.handler.accept(packet);
+            //handlePacket(packet);
         }
         //socket.close();
     }
 
+    // observer
     private void handlePacket(DatagramPacket packet) {
         String received = new String(packet.getData(), 0, packet.getLength());
         switch (received){
