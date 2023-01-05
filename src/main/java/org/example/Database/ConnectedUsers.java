@@ -2,40 +2,41 @@ package org.example.Database;
 
 import org.example.CustomExceptions.UsernameManagementException;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 
 
 public class ConnectedUsers {
 
-    // TOUT MODIFIER POUR REMPLACER LISTE PAR HASHMAP AVEC CODE ID <=> USERNAME
-    private LinkedList<String> connectedUsers;
+    private HashMap<String, String> connectedUsers;
 
     public ConnectedUsers() {
-        this.connectedUsers = new LinkedList<>();
+        this.connectedUsers = new HashMap<>();
     }
 
-    public void addUser(String username) throws UsernameManagementException {
-        if(this.connectedUsers.contains(username)){
-            throw new UsernameManagementException("Username is already in use. ");
-        } else {
-            this.connectedUsers.add(username);
+    public void addUser(String address, String username) {
+        if(!this.connectedUsers.containsKey(address)){
+            this.connectedUsers.put(address, username);
         }
     }
 
-    public void removeUser(String username) throws UsernameManagementException {
-        if(this.connectedUsers.contains(username)){
-            this.connectedUsers.remove(username);
+    public void removeUser(String address) throws UsernameManagementException {
+        if(this.connectedUsers.containsKey(address)){
+            this.connectedUsers.remove(address);
         } else {
             throw new UsernameManagementException("User is already disconnected. ");
         }
     }
 
-    public boolean isConnected(String username){
-        return this.connectedUsers.contains(username);
+    public boolean isConnected(String address){
+        return this.connectedUsers.containsKey(address);
     }
 
-    public void changeUsername(String oldUsername, String newUsername) {
-
+    public void changeUsername(String address, String oldUsername, String newUsername) throws UsernameManagementException {
+        if(this.connectedUsers.containsKey(address)){
+            this.connectedUsers.replace(address, oldUsername, newUsername);
+        } else {
+            throw new UsernameManagementException("User is already disconnected. ");
+        }
     }
 
 }

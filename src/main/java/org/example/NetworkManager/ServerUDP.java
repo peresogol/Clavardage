@@ -34,24 +34,8 @@ public class ServerUDP extends Thread {
                 throw new RuntimeException(e);
             }
             this.handler.accept(packet);
-            //handlePacket(packet);
         }
-        //socket.close();
     }
 
-    // observer
-    private void handlePacket(DatagramPacket packet) {
-        String received = new String(packet.getData(), 0, packet.getLength());
-        switch (received){
-            case "AreYouOk":
-                NetworkManager.respondToNetworkDiscovery();
-                break;
-            case "YesIAm":
-                //TODO maj db
-                break;
-            default:
-                System.out.println("Error");
-        }
-    }
 
 }

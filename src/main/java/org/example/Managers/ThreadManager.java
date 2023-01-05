@@ -17,10 +17,14 @@ public class ThreadManager extends Thread {
 
         int port = 4444;
         while (true) {
-            System.out.println("a");
             try {
-                serveurSocket = new ServerSocket(port++);
+                serveurSocket = new ServerSocket(port);
+                port = port + 1;
+
+                // Fonction bloquante en attente d'une requête de connexion
                 socket = serveurSocket.accept();
+
+                // Créer un nouveau thread dédié à une conversation donnée
                 new ServeurTCP(socket, serveurSocket).start();
             } catch (IOException e) {
                 throw new RuntimeException(e);
