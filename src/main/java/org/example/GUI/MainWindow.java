@@ -161,12 +161,10 @@ public class MainWindow {
             listModel.addElement("YOU: " + message);
         }
 
-        renderer.setParamsText(counter, center);
+        renderer.setParamsText(counter++, center);
 
         listModel.addElement(dateFormat.format(date));
-        renderer.setParamsText(counter, center, 8, Color.GRAY);
-
-        counter++;
+        renderer.setParamsText(counter++, center, 8, Color.GRAY);
 
     }
 
