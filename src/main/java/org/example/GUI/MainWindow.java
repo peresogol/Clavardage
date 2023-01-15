@@ -60,37 +60,28 @@ public class MainWindow {
 
         top = new JPanel();
         top.setPreferredSize(new Dimension(300, 70));
-        //top.setBackground(Color.blue);
         frame.getContentPane().add(top, BorderLayout.NORTH);
 
         left = new JPanel();
         left.setPreferredSize(new Dimension(300, 3000));
-        //left.setLayout(new GridLayout(500,0));
         left.setLayout(new FlowLayout());
-        JScrollPane leftScrollPane = new JScrollPane(left);
-        leftScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        frame.add(leftScrollPane, BorderLayout.WEST);
-
+        //JScrollPane leftScrollPane = new JScrollPane(left);
+        //leftScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        //frame.add(leftScrollPane, BorderLayout.WEST);
+        frame.add(left, BorderLayout.WEST);
 
         center = new JPanel(new BorderLayout());
         center.setPreferredSize(new Dimension(150, 100));
         center.setBackground(Color.cyan);
         frame.getContentPane().add(center, BorderLayout.CENTER);
 
-        /*
-        right = new JPanel();
-        right.setPreferredSize(new Dimension(300, 100));
-        //right.setBackground(Color.green);
-        right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
-        JScrollPane rightScrollPane = new JScrollPane(right);
-        frame.add(rightScrollPane, BorderLayout.EAST);
-*/
         right = new JPanel();
         right.setPreferredSize(new Dimension(300, 3000));
         right.setLayout(new FlowLayout());
-        JScrollPane rightScrollPane = new JScrollPane(right);
+        //JScrollPane rightScrollPane = new JScrollPane(right);
         //rightScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        frame.add(rightScrollPane, BorderLayout.EAST);
+        //frame.add(rightScrollPane, BorderLayout.EAST);
+        frame.add(right, BorderLayout.EAST);
 
         bottom = new JPanel();
         bottom.setPreferredSize(new Dimension(300, 50));
@@ -126,7 +117,10 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 //TODO
                 // Clear the text field
+                String msg = messageField.getText();
                 messageField.setText("");
+                displayMessage(msg, 4); // 4 means right-centered
+
             }
         });
 
@@ -156,15 +150,17 @@ public class MainWindow {
 
     }
 
-    public static void displayMessage(String message, SwingConstants center){
+    public static void displayMessage(String message, int center){
+        // center : 4 for right, 2 for left
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-        if (center.equals(SwingConstants.LEFT)){
+        if (center == 2){
             listModel.addElement("NOM: " + message);
         } else {
             listModel.addElement("YOU: " + message);
         }
+
         renderer.setParamsText(counter, center);
 
         listModel.addElement(dateFormat.format(date));

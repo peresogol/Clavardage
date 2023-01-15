@@ -17,13 +17,13 @@ public class MessageRenderer extends DefaultListCellRenderer {
         alignments = new HashMap<>();
     }
 
-    public void setParamsText(int index, SwingConstants alignment, int fontSize, Color fontColor) {
+    public void setParamsText(int index, int alignment, int fontSize, Color fontColor) {
         alignments.put(index, alignment);
         fontSizes.put(index, fontSize);
         fontColors.put(index, fontColor);
     }
 
-    public void setParamsText(int index, SwingConstants alignment) {
+    public void setParamsText(int index, int alignment) {
         alignments.put(index, alignment);
     }
 
