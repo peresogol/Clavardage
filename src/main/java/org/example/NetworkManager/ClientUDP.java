@@ -30,6 +30,21 @@ public class ClientUDP {
         //waitForResponse();
     }
 
+    public static void sendMessage(String message, InetAddress address) {
+
+        try {
+            socket = new DatagramSocket();
+
+            byte[] buffer = message.getBytes();
+
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 5555);
+            socket.send(packet);
+
+            socket.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /* Récupère les adresses des réseaux auquel est connecté l'hôte
      * Retourne une liste contenant ces adresses

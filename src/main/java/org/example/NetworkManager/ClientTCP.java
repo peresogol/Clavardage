@@ -4,19 +4,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
 
 public class ClientTCP {
 
-    public static void sendMessage(String msg) {
+    public static void sendMessage(String msg, InetAddress address, int port) {
 
         final Socket clientSocket;
         final PrintWriter out;
 
         try {
-            clientSocket = new Socket("127.0.0.1",4444);
+            // ERROR POSSIBLE
+            clientSocket = new Socket(address, port);
 
             out = new PrintWriter(clientSocket.getOutputStream());
 

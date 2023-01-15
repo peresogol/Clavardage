@@ -31,9 +31,10 @@ public class ConnectedUsers {
         return this.connectedUsers.containsKey(address);
     }
 
-    public void changeUsername(String address, String oldUsername, String newUsername) throws UsernameManagementException {
+    public void changeUsername(String address, String newUsername) throws UsernameManagementException {
         if(this.connectedUsers.containsKey(address)){
-            this.connectedUsers.replace(address, oldUsername, newUsername);
+            this.connectedUsers.replace(address, newUsername);
+            //this.connectedUsers.replace(address, oldUsername, newUsername);
         } else {
             throw new UsernameManagementException("User is already disconnected. ");
         }
