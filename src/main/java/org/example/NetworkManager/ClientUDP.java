@@ -22,13 +22,16 @@ public class ClientUDP {
             for(InetAddress addr : addressList) {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length, addr, 5555);
                 socket.send(packet);
+                packet = new DatagramPacket(buffer, buffer.length, addr, 6666);
+                socket.send(packet);
             }
             socket.close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        //waitForResponse();
     }
+
+
 
     public static void sendMessage(String message, InetAddress address) {
 
@@ -38,6 +41,9 @@ public class ClientUDP {
             byte[] buffer = message.getBytes();
 
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 5555);
+            socket.send(packet);
+
+            packet = new DatagramPacket(buffer, buffer.length, address, 6666);
             socket.send(packet);
 
             socket.close();
@@ -62,20 +68,29 @@ public class ClientUDP {
         return broadcastList;
     }
 
-    private static void waitForResponse() {
-        byte[] buf = new byte[1024];
-        DatagramSocket socket = null;
-        try {
-            socket = new DatagramSocket(5555);
-            DatagramPacket packet;
-            packet = new DatagramPacket(buf, buf.length);
-            socket.receive(packet);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void close() {
         socket.close();
+    }
+
+
+
+    ///////////////////////////
+    ///// Local host part /////
+    ///////////////////////////
+
+    public static void sendLocalBroadcast(String broadcastMessage, int port) {
+        try {
+            socket = new DatagramSocket();
+
+            byte[] buffer = broadcastMessage.getBytes();
+
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), port);
+            socket.send(packet);
+
+            socket.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

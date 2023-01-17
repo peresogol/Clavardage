@@ -10,16 +10,18 @@ import java.net.Socket;
 
 public class ThreadManager extends Thread {
 
+    public static int port = 4444;
+
+
     public void run() {
 
         ServerSocket serveurSocket;
         Socket socket;
 
-        int port = 4444;
         while (true) {
             try {
                 serveurSocket = new ServerSocket(port);
-                port = port + 1;
+                port++;
 
                 // Fonction bloquante en attente d'une requête de connexion
                 socket = serveurSocket.accept();

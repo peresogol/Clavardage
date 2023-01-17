@@ -1,25 +1,25 @@
 package org.example;
 
+import org.example.NetworkManager.NetworkManager;
+
 public class FormatServiceMessage {
 
     public static String msgGetConnectedUsers(){
-        return "001";
+        return "001" + NetworkManager.username;
     }
     public static String msgIsConnected(){
-        return "002";
+        return "002" + NetworkManager.username;
     }
 
     public static String msgChooseUsername(String msg) { return "003" + msg; }
 
     public static String msgUsernameAlreadyUsed(){
-        return "004";
+        return "004" + NetworkManager.username;
     }
 
-    public static String msgUserLeaving(){
-        return "005";
-    } // TODO add in GUI class when clicking on "close" button
+    public static String msgUserLeaving(){ return "005" + NetworkManager.username; }
 
-    public static String msgAskPort() { return "006"; }
+    public static String msgAskPort() { return "006" + NetworkManager.username; }
 
     public static String msgRespondPort (String port) { return "007" + port; }
 

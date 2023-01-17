@@ -6,47 +6,32 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 
 public class MainWindow {
 
-    private static JTextField messageField;
-    private static JButton sendButton;
-    private static DefaultListModel<String> messagesModel;
-    private static JList<String> messagesList;
-    private static DefaultListModel<String> listModel;
-    private static JList<String> list;
-    private static MessageRenderer renderer;
-    private static int counter = 0;
-    private static JPanel top, bottom, right, left, center;
-    private static JFrame frame;
-
-    //////////////////////////////////////////////////////
-    /////////// Create button for conversation ///////////
-    //////////////////////////////////////////////////////
-    public static void addConversations(String name){
-        // Création des composants de l'interface
-        JButton button = new JButton(name);
-        button.setPreferredSize(new Dimension(300, 40));
-        left.add(button);
-        //TODO ajouter au tableau
-    }
-
-    public static void addConnectedUser(String name){
-        // Création des composants de l'interface
-        JButton button = new JButton(name);
-        button.setPreferredSize(new Dimension(300, 40));
-        right.add(button);
-        //TODO ajouter au tableau
-    }
+    private JTextField messageField;
+    private JButton sendButton;
+    private DefaultListModel<String> messagesModel;
+    private JList<String> messagesList;
+    private DefaultListModel<String> listModel;
+    private JList<String> list;
+    private MessageRenderer renderer;
+    private int counter = 0;
+    private JPanel top, bottom, right, left, center;
+    private JFrame frame;
+    private LinkedList<String> listConnectedUsersDisplayed;
 
     /////////////////////////////////////////
     ////////// Create GUI skeleton //////////
     /////////////////////////////////////////
-    public static void createAndShowGUI(){
-        frame = new JFrame("Layout Demo");
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //frame.setUndecorated(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public MainWindow(String wd){
+        this.listConnectedUsersDisplayed = new LinkedList<>();
+        this.listConnectedUsersDisplayed.add(wd); // Empêche au programme de s'afficher dans la liste des utilisateurs connectés
+        this.frame = new JFrame(wd);
+        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //this.frame.setUndecorated(true);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -58,62 +43,62 @@ public class MainWindow {
         ////////// Container creation //////////
         ////////////////////////////////////////
 
-        top = new JPanel();
-        top.setPreferredSize(new Dimension(300, 70));
-        frame.getContentPane().add(top, BorderLayout.NORTH);
+        this.top = new JPanel();
+        this.top.setPreferredSize(new Dimension(300, 70));
+        this.frame.getContentPane().add(this.top, BorderLayout.NORTH);
 
-        left = new JPanel();
-        left.setPreferredSize(new Dimension(300, 3000));
-        left.setLayout(new FlowLayout());
+        this.left = new JPanel();
+        this.left.setPreferredSize(new Dimension(300, 3000));
+        this.left.setLayout(new FlowLayout());
         //JScrollPane leftScrollPane = new JScrollPane(left);
         //leftScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //frame.add(leftScrollPane, BorderLayout.WEST);
-        frame.add(left, BorderLayout.WEST);
+        //this.frame.add(leftScrollPane, BorderLayout.WEST);
+        this.frame.add(this.left, BorderLayout.WEST);
 
-        center = new JPanel(new BorderLayout());
-        center.setPreferredSize(new Dimension(150, 100));
-        center.setBackground(Color.cyan);
-        frame.getContentPane().add(center, BorderLayout.CENTER);
+        this.center = new JPanel(new BorderLayout());
+        this.center.setPreferredSize(new Dimension(150, 100));
+        this.center.setBackground(Color.cyan);
+        this.frame.getContentPane().add(this.center, BorderLayout.CENTER);
 
-        right = new JPanel();
-        right.setPreferredSize(new Dimension(300, 3000));
-        right.setLayout(new FlowLayout());
+        this.right = new JPanel();
+        this.right.setPreferredSize(new Dimension(300, 3000));
+        this.right.setLayout(new FlowLayout());
         //JScrollPane rightScrollPane = new JScrollPane(right);
         //rightScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        //frame.add(rightScrollPane, BorderLayout.EAST);
-        frame.add(right, BorderLayout.EAST);
+        //this.frame.add(rightScrollPane, BorderLayout.EAST);
+        this.frame.add(this.right, BorderLayout.EAST);
 
-        bottom = new JPanel();
-        bottom.setPreferredSize(new Dimension(300, 50));
+        this.bottom = new JPanel();
+        this.bottom.setPreferredSize(new Dimension(300, 50));
         //bottom.setBackground(Color.red);
-        frame.getContentPane().add(bottom, BorderLayout.SOUTH);
+        this.frame.getContentPane().add(this.bottom, BorderLayout.SOUTH);
 
         /////////////////////////////////////////
         /////////// Message displayer ///////////
         /////////////////////////////////////////
 
-        messageField = new JTextField(100);
-        sendButton = new JButton("Send");
-        messagesModel = new DefaultListModel<>();
-        messagesList = new JList<>(messagesModel);
+        this.messageField = new JTextField(100);
+        this.sendButton = new JButton("Send");
+        this.messagesModel = new DefaultListModel<>();
+        this.messagesList = new JList<>(this.messagesModel);
 
-        JScrollPane scrollPane = new JScrollPane(messagesList);
+        JScrollPane scrollPane = new JScrollPane(this.messagesList);
 
         JPanel inputPanel = new JPanel();
-        inputPanel.add(messageField);
-        inputPanel.add(sendButton);
+        inputPanel.add(this.messageField);
+        inputPanel.add(this.sendButton);
 
-        bottom.add(inputPanel);
-        center.add(scrollPane);
+        this.bottom.add(inputPanel);
+        this.center.add(scrollPane);
 
-        listModel = new DefaultListModel<>();
-        list = new JList<>(listModel);
-        renderer = new MessageRenderer();
-        list.setCellRenderer(renderer);
-        center.add(list);
+        this.listModel = new DefaultListModel<>();
+        this.list = new JList<>(this.listModel);
+        this.renderer = new MessageRenderer();
+        this.list.setCellRenderer(this.renderer);
+        this.center.add(this.list);
 
         // Add an action listener to the send button
-        sendButton.addActionListener(new ActionListener() {
+        this.sendButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //TODO
                 // Clear the text field
@@ -129,13 +114,13 @@ public class MainWindow {
         /////////////////////////////////////////
 
         // Show the Frame
-        frame.pack();
-        frame.setVisible(true);
+        this.frame.pack();
+        this.frame.setVisible(true);
 
-       /* frame.addWindowListener(new java.awt.event.WindowAdapter() {
+       /* this.frame.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                if (JOptionPane.showConfirmDialog(frame,
+                if (JOptionPane.showConfirmDialog(this.frame,
                         "Are you sure you want to close this window?", "Close Window?",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
@@ -146,11 +131,11 @@ public class MainWindow {
         });*/
     }
 
-    public static void loadConversation(){
+    public void loadConversation(){
 
     }
 
-    public static void displayMessage(String message, int center){
+    public void displayMessage(String message, int center){
         // center : 4 for right, 2 for left
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -168,7 +153,33 @@ public class MainWindow {
 
     }
 
-    public static void main(String[] args) {
+    //////////////////////////////////////////////////////
+    /////////// Create button for conversation ///////////
+    //////////////////////////////////////////////////////
+    public void addConversations(String name){
+        // Création des composants de l'interface
+        JButton button = new JButton(name);
+        button.setPreferredSize(new Dimension(300, 40));
+        this.left.add(button);
+        //TODO ajouter au tableau
+    }
+
+    public void addConnectedUser(String name){
+        // Création des composants de l'interface
+        if(!this.listConnectedUsersDisplayed.contains(name)){
+            JButton button = new JButton(name);
+            button.setPreferredSize(new Dimension(300, 40));
+            this.right.add(button);
+            this.right.revalidate();
+            this.listConnectedUsersDisplayed.add(name);
+            System.out.println("Method add : " + name + " " + this.frame.getTitle());
+        }
+
+        //TODO ajouter au tableau
+    }
+
+/*
+    public void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
@@ -182,101 +193,5 @@ public class MainWindow {
                 }
             }
         });
-    }
+    }*/
 }
-
-
-
-/*package org.example.GUI;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class MainWindow extends JFrame {
-
-    private JTextField messageField;
-    private JButton sendButton;
-    private DefaultListModel<String> messagesModel;
-    private JList<String> messagesList;
-
-    public MainWindow() {
-
-        // Set the title and layout of the window
-        setTitle("Message App");
-        setLayout(new BorderLayout());
-
-        // Initialize the text field, button, and list model
-        messageField = new JTextField(20);
-        sendButton = new JButton("Send");
-        messagesModel = new DefaultListModel<>();
-
-        // Add the text field and button to a panel
-        JPanel inputPanel = new JPanel();
-        inputPanel.add(messageField);
-        inputPanel.add(sendButton);
-
-        // Add the panel to the window
-        add(inputPanel, BorderLayout.SOUTH);
-
-        // Create the list and add it to a scroll pane
-        messagesList = new JList<>(messagesModel);
-        JScrollPane scrollPane = new JScrollPane(messagesList);
-
-        // Add the scroll pane to the window
-        add(scrollPane, BorderLayout.CENTER);
-
-        // Add an action listener to the send button
-        sendButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Get the message from the text field
-                String message = messageField.getText();
-
-                // Clear the text field
-                messageField.setText("");
-
-                // Add the message to the list model
-                messagesModel.addElement("You: " + message);
-            }
-        });
-
-        // Création des composants de l'interface
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        JButton button1 = new JButton("Bouton 1");
-        JButton button2 = new JButton("Bouton 2");
-        JButton button3 = new JButton("Bouton 3");
-        leftPanel.add(button1);
-        leftPanel.add(button2);
-        leftPanel.add(button3);
-
-        JScrollPane leftScrollPane = new JScrollPane(leftPanel);
-
-        JTextArea textArea1 = new JTextArea("Champ de texte 1");
-        JTextArea textArea2 = new JTextArea("Champ de texte 2");
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
-        rightPanel.add(textArea1);
-        rightPanel.add(textArea2);
-
-        JScrollPane rightScrollPane = new JScrollPane(rightPanel);
-
-        // Ajout des composants à la fenêtre
-      //  add(leftScrollPane, BorderLayout.WEST);
-       // add(rightScrollPane, BorderLayout.EAST);
-
-
-        // Set the size and location of the window
-        setSize(300, 200);
-        setLocationRelativeTo(null);
-
-        // Display the window
-        setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new MainWindow();
-    }
-}
-*/
