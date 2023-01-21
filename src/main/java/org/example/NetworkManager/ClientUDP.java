@@ -6,6 +6,12 @@ import java.util.*;
 
 public class ClientUDP {
     private static DatagramSocket socket;
+    private static int destPort;
+
+
+    public static void setDestPort(int destPort) {
+        ClientUDP.destPort = destPort;
+    }
 
     /*  Envoie la chaine de caractères broadcastMessage en broadcast sur toutes les adresses réseaux
      *  présentes dans la liste addressList, renvoyée par la fonction getBroadcastAddress()
@@ -20,10 +26,10 @@ public class ClientUDP {
             byte[] buffer = broadcastMessage.getBytes();
 
             for(InetAddress addr : addressList) {
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, addr, 5555);
+                DatagramPacket packet = new DatagramPacket(buffer, buffer.length, addr, destPort);
                 socket.send(packet);
-                packet = new DatagramPacket(buffer, buffer.length, addr, 6666);
-                socket.send(packet);
+               // packet = new DatagramPacket(buffer, buffer.length, addr, 6666);
+               // socket.send(packet);
             }
             socket.close();
         } catch (Exception e) {
@@ -40,11 +46,11 @@ public class ClientUDP {
 
             byte[] buffer = message.getBytes();
 
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 5555);
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, destPort);
             socket.send(packet);
 
-            packet = new DatagramPacket(buffer, buffer.length, address, 6666);
-            socket.send(packet);
+           // packet = new DatagramPacket(buffer, buffer.length, address, 6666);
+            //socket.send(packet);
 
             socket.close();
         } catch (Exception e) {
@@ -74,23 +80,4 @@ public class ClientUDP {
     }
 
 
-
-    ///////////////////////////
-    ///// Local host part /////
-    ///////////////////////////
-
-    public static void sendLocalBroadcast(String broadcastMessage, int port) {
-        try {
-            socket = new DatagramSocket();
-
-            byte[] buffer = broadcastMessage.getBytes();
-
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("localhost"), port);
-            socket.send(packet);
-
-            socket.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

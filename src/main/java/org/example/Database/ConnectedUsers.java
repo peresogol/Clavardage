@@ -13,33 +13,37 @@ public class ConnectedUsers {
         this.connectedUsers = new HashMap<>();
     }
 
-    public void addUser(String address, String username) {
-        if(!this.connectedUsers.containsKey(address)){
-            this.connectedUsers.put(address, username);
+    public void addUser(String username, String address) {
+        if(!this.connectedUsers.containsValue(address)){
+            this.connectedUsers.put(username, address);
         }
     }
 
-    public void removeUser(String address) throws UsernameManagementException {
-        if(this.connectedUsers.containsKey(address)){
-            this.connectedUsers.remove(address);
+    public void removeUser(String username) throws UsernameManagementException {
+        if(this.connectedUsers.containsKey(username)){
+            // TODO check pertinence : l'inverse n'est as mieux ?
+            this.connectedUsers.remove(username);
         } else {
             throw new UsernameManagementException("User is already disconnected. ");
         }
     }
 
     public boolean isConnected(String address){
-        return this.connectedUsers.containsKey(address);
+        return this.connectedUsers.containsValue(address);
     }
 
-    public void changeUsername(String address, String newUsername) throws UsernameManagementException {
-        if(this.connectedUsers.containsKey(address)){
-            this.connectedUsers.replace(address, newUsername);
-            //this.connectedUsers.replace(address, oldUsername, newUsername);
+    public void changeUsername(String newUsername, String oldUsername, String address) throws UsernameManagementException {
+        if(this.connectedUsers.containsValue(address)){
+            this.removeUser(oldUsername);
+            this.addUser(newUsername, address);
         } else {
             throw new UsernameManagementException("User is already disconnected. ");
         }
     }
 
+    public String getAddress(String username){
+        return this.connectedUsers.get(username);
+    }
 }
 
 

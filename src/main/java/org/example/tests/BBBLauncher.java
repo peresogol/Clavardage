@@ -1,28 +1,31 @@
-package org.example;
+package org.example.tests;
 
-import org.example.GUI.MainWindow;
+import org.example.FormatServiceMessage;
+import org.example.Managers.ThreadManager;
 import org.example.NetworkManager.ClientUDP;
 import org.example.NetworkManager.NetworkManager;
 import org.example.NetworkManager.ServerUDP;
 
-public class Launcher {
+public class BBBLauncher {
 
     private static ServerUDP serv;
-    public static NetworkManager networkManager;
+    private static NetworkManager networkManager;
+    private static ThreadManager threadManager;
 
     public static void main(String[] args) {
 
         // Start Database
         // Start Connected Users
-        // Start ThreadManager
-        networkManager = new NetworkManager("AAA");
+        threadManager = new ThreadManager(6500);
+        threadManager.start();
+        networkManager = new NetworkManager("BBB", 5000);
         startUDPServer();
     }
 
 
     // Start Server UDP
     public static void startUDPServer(){
-        serv = new ServerUDP(5555, packet -> networkManager.msgUDPhandler(packet));
+        serv = new ServerUDP(6000, packet -> networkManager.msgUDPhandler(packet));
         serv.start();
         discoverNetwork();
     }

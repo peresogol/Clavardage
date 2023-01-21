@@ -13,6 +13,7 @@ public class ServeurTCP extends Thread {
     private Socket sock;
     private String address; // identifier
     public ServeurTCP(Socket socket, ServerSocket serveurSocket) {
+        System.out.println("server tcp consrt");
         this.sock = socket;
         this.serveurSock = serveurSocket;
         this.address = String.valueOf(this.sock.getInetAddress());
@@ -27,7 +28,7 @@ public class ServeurTCP extends Thread {
 
             while(msg!=null){
                 System.out.println("AppClient sends : "+msg);
-                Manager.dispatch(msg, this.address);
+                //Manager.dispatch(msg, this.address); // TODO useless
                 msg = in.readLine();
             }
             System.out.println("Message Received: " + msg);

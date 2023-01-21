@@ -1,5 +1,7 @@
 package org.example.GUI;
 
+import org.example.NetworkManager.NetworkManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,6 +22,7 @@ public class MainWindow {
     private int counter = 0;
     private JPanel top, bottom, right, left, center;
     private JFrame frame;
+    private JLabel topLabel;
     private LinkedList<String> listConnectedUsersDisplayed;
 
     /////////////////////////////////////////
@@ -43,8 +46,10 @@ public class MainWindow {
         ////////// Container creation //////////
         ////////////////////////////////////////
 
+        topLabel = new JLabel("");
         this.top = new JPanel();
         this.top.setPreferredSize(new Dimension(300, 70));
+        this.top.add(topLabel);
         this.frame.getContentPane().add(this.top, BorderLayout.NORTH);
 
         this.left = new JPanel();
@@ -104,8 +109,10 @@ public class MainWindow {
                 // Clear the text field
                 String msg = messageField.getText();
                 messageField.setText("");
-                displayMessage(msg, 4); // 4 means right-centered
 
+                NetworkManager.sendMessage(msg, topLabel.getText());
+
+                displayMessage(msg, 4); // 4 means right-centered
             }
         });
 
@@ -169,15 +176,24 @@ public class MainWindow {
         if(!this.listConnectedUsersDisplayed.contains(name)){
             JButton button = new JButton(name);
             button.setPreferredSize(new Dimension(300, 40));
+            button.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e)
+                {
+                    topLabel.setText(e.getActionCommand());
+                }
+            });
             this.right.add(button);
             this.right.revalidate();
             this.listConnectedUsersDisplayed.add(name);
-            System.out.println("Method add : " + name + " " + this.frame.getTitle());
         }
 
         //TODO ajouter au tableau
     }
 
+    public String getDest(){
+        return this.topLabel.getText();
+    }
 /*
     public void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {

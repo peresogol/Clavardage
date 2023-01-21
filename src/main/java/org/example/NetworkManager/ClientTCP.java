@@ -18,6 +18,7 @@ public class ClientTCP {
 
         try {
             // ERROR POSSIBLE
+
             clientSocket = new Socket(address, port);
 
             out = new PrintWriter(clientSocket.getOutputStream());
