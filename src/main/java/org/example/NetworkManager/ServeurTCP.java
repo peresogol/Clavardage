@@ -1,6 +1,5 @@
 package org.example.NetworkManager;
 
-import org.example.Managers.Manager;
 
 import java.io.*;
 import java.net.ServerSocket;
