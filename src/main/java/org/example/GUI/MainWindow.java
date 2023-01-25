@@ -25,6 +25,8 @@ public class MainWindow {
     private JLabel topLabel;
     private LinkedList<String> listConnectedUsersDisplayed;
 
+    private String currentConversation;
+
     /////////////////////////////////////////
     ////////// Create GUI skeleton //////////
     /////////////////////////////////////////
@@ -112,7 +114,6 @@ public class MainWindow {
 
                 NetworkManager.sendMessage(msg, topLabel.getText());
 
-                displayMessage(msg, 4); // 4 means right-centered
             }
         });
 
@@ -138,26 +139,22 @@ public class MainWindow {
         });*/
     }
 
-    public void loadConversation(){
-
-    }
-
-    public void displayMessage(String message, int center){
+    public void displayMessage(String message, String date, int place){
         // center : 4 for right, 2 for left
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-        if (center == 2){
-            listModel.addElement("NOM: " + message);
+        System.out.println(message + date + place);
+        if (place == 2){
+            listModel.addElement(topLabel.getText() + message);
         } else {
             listModel.addElement("YOU: " + message);
         }
 
-        renderer.setParamsText(counter++, center);
+        renderer.setParamsText(counter++, place);
 
-        listModel.addElement(dateFormat.format(date));
-        renderer.setParamsText(counter++, center, 8, Color.GRAY);
+        listModel.addElement(date);
+        renderer.setParamsText(counter++, place, 8, Color.GRAY);
 
+        center.revalidate();
     }
 
     //////////////////////////////////////////////////////
@@ -167,8 +164,21 @@ public class MainWindow {
         // Création des composants de l'interface
         JButton button = new JButton(name);
         button.setPreferredSize(new Dimension(300, 40));
+        button.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e)
+            {
+                //TODO
+                String tmp = e.getActionCommand();
+                topLabel.setText(tmp);
+                currentConversation = tmp;
+                listModel.removeAllElements();
+                center.revalidate();
+                NetworkManager.getMessages(currentConversation);
+            }
+        });
         this.left.add(button);
-        //TODO ajouter au tableau
+        this.right.revalidate();
     }
 
     public void addConnectedUser(String name){
@@ -187,27 +197,10 @@ public class MainWindow {
             this.right.revalidate();
             this.listConnectedUsersDisplayed.add(name);
         }
-
-        //TODO ajouter au tableau
     }
 
     public String getDest(){
         return this.topLabel.getText();
     }
-/*
-    public void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-                for(int i =0; i < 5; i++){
-                    addConversations("aa");
-                    addConversations("aa");
-                }
-                for(int i =0; i < 15; i++){
-                    addConnectedUser("Sacha");
-                    addConnectedUser("JF");
-                }
-            }
-        });
-    }*/
+
 }

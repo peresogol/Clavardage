@@ -1,8 +1,9 @@
 package org.example.Database;
 
 import org.example.CustomExceptions.UsernameManagementException;
-
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Objects;
 
 
 public class ConnectedUsers {
@@ -43,6 +44,16 @@ public class ConnectedUsers {
 
     public String getAddress(String username){
         return this.connectedUsers.get(username);
+    }
+
+    public String getUsername(String address) {
+        String res = "";
+        for (Entry<String, String> entry : this.connectedUsers.entrySet()) {
+            if (Objects.equals(address, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return res;
     }
 }
 

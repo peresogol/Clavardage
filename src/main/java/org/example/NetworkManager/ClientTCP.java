@@ -8,20 +8,19 @@ import java.net.Socket;
 
 public class ClientTCP {
 
-    public static void sendMessage(String msg, InetAddress address, int port) {
+    public static void sendMessage(String msg, InetAddress address, int port, String username) {
 
         final Socket clientSocket;
         final PrintWriter out;
 
         try {
             // ERROR POSSIBLE
-
             clientSocket = new Socket(address, port);
-
             out = new PrintWriter(clientSocket.getOutputStream());
-
             out.println(msg);
             out.flush();
+
+            NetworkManager.MessageSent(username, msg);;
         } catch (IOException e) {
             e.printStackTrace();}
     }
