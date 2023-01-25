@@ -6,6 +6,9 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 
+/*
+Classe permettant de stocker les utilisateurs connectés. Associe une adresse IP à un username.
+ */
 public class ConnectedUsers {
 
     private HashMap<String, String> connectedUsers;
@@ -20,6 +23,9 @@ public class ConnectedUsers {
         }
     }
 
+    /*
+    Retire un utilisateur de la base de données des utilisateurs connectés
+     */
     public void removeUser(String username) throws UsernameManagementException {
         if(this.connectedUsers.containsKey(username)){
             // TODO check pertinence : l'inverse n'est as mieux ?
@@ -46,6 +52,9 @@ public class ConnectedUsers {
         return this.connectedUsers.get(username);
     }
 
+    /*
+    Resolve username corresponding to an address
+    */
     public String getUsername(String address) {
         String res = "";
         for (Entry<String, String> entry : this.connectedUsers.entrySet()) {

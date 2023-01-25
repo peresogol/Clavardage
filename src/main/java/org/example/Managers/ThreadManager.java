@@ -12,6 +12,9 @@ public class ThreadManager extends Thread {
 
     public static int port;
 
+    /*
+    Classe chargée de la création de thread de type ServerTCP. Chaque thread créé est alloué à la réception des messages d'une seule conversation
+     */
     public ThreadManager(int p){
         port = p;
     }
@@ -27,7 +30,6 @@ public class ThreadManager extends Thread {
                 System.out.println("listening on port " + port);
                 // Fonction bloquante en attente d'une requête de connexion
                 socket = serveurSocket.accept();
-                System.out.println("accept scopkcet");
                 // Créer un nouveau thread dédié à une conversation donnée
                 new ServeurTCP(socket, serveurSocket).start();
                 port++;

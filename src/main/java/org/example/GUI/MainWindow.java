@@ -35,14 +35,8 @@ public class MainWindow {
         this.listConnectedUsersDisplayed.add(wd); // Empêche au programme de s'afficher dans la liste des utilisateurs connectés
         this.frame = new JFrame(wd);
         this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //this.frame.setUndecorated(true);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)size.getWidth();
-        int height = (int)size.getHeight();
-        System.out.println(width + " " + height);
 
         ////////////////////////////////////////
         ////////// Container creation //////////
@@ -77,7 +71,6 @@ public class MainWindow {
 
         this.bottom = new JPanel();
         this.bottom.setPreferredSize(new Dimension(300, 50));
-        //bottom.setBackground(Color.red);
         this.frame.getContentPane().add(this.bottom, BorderLayout.SOUTH);
 
         /////////////////////////////////////////
@@ -139,15 +132,19 @@ public class MainWindow {
         });*/
     }
 
+    /*
+    Affiche les messages dans le panel central. La date est affichée avec une police d'écriture plus petite, et en couleur grise.
+    Les messages envoyés sont centrés à gauche, et ceux reçus sont centrés sur la droite.
+     */
     public void displayMessage(String message, String date, int place){
         // center : 4 for right, 2 for left
 
-        System.out.println(message + date + place);
         if (place == 2){
-            listModel.addElement(topLabel.getText() + message);
-        } else {
+            listModel.addElement(message);
+        } else if (place == 4) {
             listModel.addElement("YOU: " + message);
         }
+        System.out.println("enter gui");
 
         renderer.setParamsText(counter++, place);
 
@@ -155,48 +152,58 @@ public class MainWindow {
         renderer.setParamsText(counter++, place, 8, Color.GRAY);
 
         center.revalidate();
+        System.out.println("Released gui");
+
     }
 
     //////////////////////////////////////////////////////
     /////////// Create button for conversation ///////////
     //////////////////////////////////////////////////////
+    /*
+    Ajoute un bouton sur le côté gauche de la fenêtre pour chaque conversation existante. Sur click, appelle la fonction loadConversation
+
+     */
     public void addConversations(String name){
         // Création des composants de l'interface
         JButton button = new JButton(name);
         button.setPreferredSize(new Dimension(300, 40));
         button.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e)
-            {
-                //TODO
-                String tmp = e.getActionCommand();
-                topLabel.setText(tmp);
-                currentConversation = tmp;
-                listModel.removeAllElements();
-                center.revalidate();
-                NetworkManager.getMessages(currentConversation);
-            }
+            public void actionPerformed(ActionEvent e) { loadConversation(e); }
         });
         this.left.add(button);
         this.right.revalidate();
     }
 
+    /*
+    Ajoute un bouton sur le côté droit de la fenêtre pour chaque utilisateur connecté. Sur click, appelle la fonction loadConversation
+     */
     public void addConnectedUser(String name){
         // Création des composants de l'interface
         if(!this.listConnectedUsersDisplayed.contains(name)){
             JButton button = new JButton(name);
             button.setPreferredSize(new Dimension(300, 40));
             button.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e)
-                {
-                    topLabel.setText(e.getActionCommand());
-                }
+                public void actionPerformed(ActionEvent e) { loadConversation(e); }
             });
             this.right.add(button);
             this.right.revalidate();
             this.listConnectedUsersDisplayed.add(name);
         }
+    }
+
+    /*
+    Cette méthode affiche la conversation désigné par le paramètre (en provenance d'un bouton "utilisateur connecté" ou "conversation" dans le panel central.
+    et le destinataire du prochain message envoyé devient l'utilisateur désigné par le bouton
+    (si connecté, sinon génère une erreur non traitée par manque de temps)
+     */
+    public void loadConversation(ActionEvent e){
+        String tmp = e.getActionCommand();
+        topLabel.setText(e.getActionCommand());
+        currentConversation = tmp;
+        listModel.removeAllElements();
+        center.revalidate();
+        NetworkManager.createTable(currentConversation);
+        NetworkManager.getMessages(currentConversation);
     }
 
     public String getDest(){

@@ -2,6 +2,9 @@ package org.example;
 
 import org.example.NetworkManager.NetworkManager;
 
+/*
+Classe permettant la création des messages "standards" échangés via UDP.
+ */
 public class FormatServiceMessage {
 
     public static String msgGetConnectedUsers(){

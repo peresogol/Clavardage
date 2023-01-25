@@ -37,7 +37,6 @@ public class DatabaseMsg {
     }
 
     public void insertMessage(String username, String msg, int center){
-        //int id = 0; // TODO define id -> on fait un select, si rien id = 0 sinon id = dernier id + 1
         java.util.Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         String query = "INSERT INTO " + username + " VALUES (\"" + msg + "\", \"" + dateFormat.format(date) +"\", " + center + ");";
@@ -48,7 +47,6 @@ public class DatabaseMsg {
         } catch (SQLException e) {
             System.out.println("insert " + e.getMessage());
         }
-
     }
 
     public void selectMessages(String username){
@@ -61,15 +59,14 @@ public class DatabaseMsg {
             while(rs.next()){
                 NetworkManager.displayMessage(rs.getString("message"), rs.getString("horodatage"), rs.getInt("center"));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String getUrl() {
-        return url;
-    }
-
+    /*
+    Retourne une liste des tables existantes (on enlève la table sqlite_schema)
+     */
     public LinkedList<String> getTables(){
 
         String  tmp;

@@ -12,6 +12,7 @@ public class ClientUDP {
         ClientUDP.destPort = destPort;
     }
 
+
     /*  Envoie la chaine de caractères broadcastMessage en broadcast sur toutes les adresses réseaux
      *  présentes dans la liste addressList, renvoyée par la fonction getBroadcastAddress()
      */
@@ -38,6 +39,9 @@ public class ClientUDP {
 
 
 
+    /*
+    Envoie d'un message à un utilisateur en particulier, permet de réduire l'usage des broadcasts et de diminuer la charge du réseau
+     */
     public static void sendMessage(String message, InetAddress address) {
 
         try {
@@ -57,7 +61,8 @@ public class ClientUDP {
         }
     }
 
-    /* Récupère les adresses des réseaux auquel est connecté l'hôte
+    /*
+     * Récupère les adresses des réseaux auquel est connecté l'hôte
      * Retourne une liste contenant ces adresses
      */
     private static List<InetAddress> getBroadcastAddress() throws SocketException {

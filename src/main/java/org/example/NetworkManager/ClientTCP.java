@@ -15,12 +15,14 @@ public class ClientTCP {
 
         try {
             // ERROR POSSIBLE
+            System.out.println(address + ":" + port);
             clientSocket = new Socket(address, port);
             out = new PrintWriter(clientSocket.getOutputStream());
             out.println(msg);
             out.flush();
+            clientSocket.close();
 
-            NetworkManager.MessageSent(username, msg);;
+            NetworkManager.messageSent(msg, username);;
         } catch (IOException e) {
             e.printStackTrace();}
     }

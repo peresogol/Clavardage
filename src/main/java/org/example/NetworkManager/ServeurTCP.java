@@ -21,14 +21,16 @@ public class ServeurTCP extends Thread {
         BufferedReader in;
         String msg;
         try {
-            in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
-            msg = in.readLine();
 
-            while(msg!=null){
-                System.out.println("Message Received: " + msg);
-                String username = NetworkManager.getUsernameFromAddress(this.address);
-                NetworkManager.handleConversation(msg, username);
+            while(true){
+                in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
                 msg = in.readLine();
+                if(msg != null){
+                    System.out.println("Message Received: " + msg);
+                    String username = NetworkManager.getUsernameFromAddress(this.address);
+                    NetworkManager.handleReceivedMessage(msg, username);
+                    System.out.println("Released");
+                }
             }
 
         } catch (Exception e) {

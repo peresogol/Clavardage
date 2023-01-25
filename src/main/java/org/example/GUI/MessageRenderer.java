@@ -27,6 +27,10 @@ public class MessageRenderer extends DefaultListCellRenderer {
         alignments.put(index, alignment);
     }
 
+    /*
+    Permet l'affichage sous forme de conversation dans le panel central, ainsi que la sélection d'une couleur et taille de police, et d'un centrage sur
+    la droite ou sur la gauche.
+     */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
