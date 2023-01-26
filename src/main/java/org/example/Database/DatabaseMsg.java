@@ -64,6 +64,19 @@ public class DatabaseMsg {
         }
     }
 
+
+    public void updateTable(String oldUsername, String newUsername){
+        String query = "ALTER TABLE " + oldUsername + " RENAME To " + newUsername;
+
+        try(Connection conn = DriverManager.getConnection(url);
+            Statement stmt = conn.createStatement();
+        ) {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*
     Retourne une liste des tables existantes (on enlève la table sqlite_schema)
      */

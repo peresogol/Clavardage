@@ -3,10 +3,10 @@ package org.example.NetworkManager;
 import org.example.CustomExceptions.UsernameManagementException;
 import org.example.Database.ConnectedUsers;
 import org.example.Database.DatabaseMsg;
-import org.example.FormatServiceMessage;
+import org.example.utils.FormatServiceMessage;
 import org.example.GUI.MainWindow;
 import org.example.Managers.ThreadManager;
-import org.example.PendingMessage;
+import org.example.utils.PendingMessage;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;

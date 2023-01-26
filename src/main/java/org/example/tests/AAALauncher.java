@@ -1,6 +1,6 @@
 package org.example.tests;
 
-import org.example.FormatServiceMessage;
+import org.example.utils.FormatServiceMessage;
 import org.example.Managers.ThreadManager;
 import org.example.NetworkManager.ClientUDP;
 import org.example.NetworkManager.NetworkManager;

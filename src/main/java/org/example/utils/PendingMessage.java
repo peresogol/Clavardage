@@ -1,11 +1,10 @@
-package org.example;
+package org.example.utils;
 
 import java.net.InetAddress;
 
 public class PendingMessage {
 
     private InetAddress address;
-    private int seqNb;
     private String msg;
 
 
