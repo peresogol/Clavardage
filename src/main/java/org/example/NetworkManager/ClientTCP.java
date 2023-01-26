@@ -19,8 +19,6 @@ public class ClientTCP {
             out = new PrintWriter(clientSocket.getOutputStream());
 
             out.println(msg);
-            out.println("azecaz");
-
             out.flush();
             clientSocket.close();
 

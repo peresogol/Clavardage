@@ -194,14 +194,24 @@ public class NetworkManager {
             throw new RuntimeException(e);
         }
 
+        //TODO
+        if(username.equals("BBB")){
+            ClientTCP.sendMessage(msg, address, 6500, username);
+        } else if(username.equals("AAA")){
+            ClientTCP.sendMessage(msg, address, 5500, username);
+        } else {
+            ClientTCP.sendMessage(msg, address, 5555, username);
+        }
 
+
+/*
         if(activConversation.containsKey(address)){
             port = activConversation.get(address);
             ClientTCP.sendMessage(msg, address, port, username);
         } else {
             pendingMessages.add(new PendingMessage(address, msg));
             ClientUDP.sendMessage(FormatServiceMessage.msgAskPort(), address);
-        }
+        }*/
     }
 
      /*
@@ -211,6 +221,7 @@ public class NetworkManager {
         java.util.Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
+        System.out.println(username + " " + msg);
         createTable(username);
         db.insertMessage(username, msg, 4);
 

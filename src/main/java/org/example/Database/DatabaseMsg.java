@@ -28,6 +28,7 @@ public class DatabaseMsg {
 
         String query = "CREATE TABLE IF NOT EXISTS " + username + "(message varchar(2000) NOT NULL, horodatage varchar(100) NOT NULL, center integer NOT NULL);";
 
+        System.out.println(query);
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement();) {
                 stmt.execute(query);
