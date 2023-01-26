@@ -144,16 +144,12 @@ public class MainWindow {
         } else if (place == 4) {
             listModel.addElement("YOU: " + message);
         }
-        System.out.println("enter gui");
 
         renderer.setParamsText(counter++, place);
-
         listModel.addElement(date);
         renderer.setParamsText(counter++, place, 8, Color.GRAY);
 
         center.revalidate();
-        System.out.println("Released gui");
-
     }
 
     //////////////////////////////////////////////////////

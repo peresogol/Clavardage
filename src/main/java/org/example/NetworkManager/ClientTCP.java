@@ -14,11 +14,13 @@ public class ClientTCP {
         final PrintWriter out;
 
         try {
-            // ERROR POSSIBLE
             System.out.println(address + ":" + port);
             clientSocket = new Socket(address, port);
             out = new PrintWriter(clientSocket.getOutputStream());
+
             out.println(msg);
+            out.println("azecaz");
+
             out.flush();
             clientSocket.close();
 

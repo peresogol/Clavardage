@@ -25,6 +25,7 @@ public class ServeurTCP extends Thread {
             while(true){
                 in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
                 msg = in.readLine();
+                System.out.println("zacazc");
                 if(msg != null){
                     System.out.println("Message Received: " + msg);
                     String username = NetworkManager.getUsernameFromAddress(this.address);
