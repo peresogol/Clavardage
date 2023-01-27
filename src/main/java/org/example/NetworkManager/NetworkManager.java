@@ -3,38 +3,32 @@ package org.example.NetworkManager;
 import org.example.CustomExceptions.UsernameManagementException;
 import org.example.Database.ConnectedUsers;
 import org.example.Database.DatabaseMsg;
+import org.example.GUI.AlertWindow;
 import org.example.utils.FormatServiceMessage;
 import org.example.GUI.MainWindow;
-import org.example.Managers.ThreadManager;
-import org.example.utils.PendingMessage;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Queue;
+
 
 public class NetworkManager {
 
-    private static HashMap<InetAddress, Integer> activConversation;
 
     private static LinkedList<String> existingConversation;
     private static ConnectedUsers databaseConnectedUsers;
     private static MainWindow mainWindow;
 
-    private static Queue<PendingMessage> pendingMessages;
-    public static String username;
+    public static String username, nextUsername;
     private static DatabaseMsg db;
 
 
     public NetworkManager(String s){
-        this.activConversation = new HashMap<>();
         this.databaseConnectedUsers = new ConnectedUsers();
         this.mainWindow = new MainWindow(s);
-        this.pendingMessages = new LinkedList<>();
         username = s;
         db =  new DatabaseMsg();
         db.init();
@@ -44,10 +38,8 @@ public class NetworkManager {
 
     // for local test, ajout d'un deuxième paramètre
     public NetworkManager(String s, int destPortUDP){
-        this.activConversation = new HashMap<>();
         this.databaseConnectedUsers = new ConnectedUsers();
         this.mainWindow = new MainWindow(s);
-        this.pendingMessages = new LinkedList<>();
         username = s;
         db =  new DatabaseMsg();
         db.init();
@@ -66,8 +58,6 @@ public class NetworkManager {
     003: broadcast pour diffuser un nouveau username
     004: réponse à 003 (refus ou ok)
     005: broadcast pour prévenir de la déconnection d'un utilisateur
-    006: requête pour connaître le numéro du prochain port disponible pour initier une connection TCP
-    007: réponse à 006
      */
     public void msgUDPhandler(DatagramPacket packet) {
         String name;
@@ -84,68 +74,72 @@ public class NetworkManager {
             case "001":
                 name = received.substring(3);
 
-                msg = FormatServiceMessage.msgIsConnected();
-                // Ajoute émetteur dans la BDD des utilisateurs connectés
-                this.databaseConnectedUsers.addUser(name, String.valueOf(srcAddress));
-                this.mainWindow.addConnectedUser(name);
+                if(this.databaseConnectedUsers.contains(name)){
+                    // username already in use
+                    msg = FormatServiceMessage.msgUsernameKO();
+                } else {
+                    // Ajoute émetteur dans la BDD des utilisateurs connectés
+                    msg = FormatServiceMessage.msgUsernameOK();
+                    this.databaseConnectedUsers.addUser(name, String.valueOf(srcAddress));
+                    this.mainWindow.addConnectedUser(name);
+                }
                 ClientUDP.sendMessage(msg, srcAddress);
                 break;
 
-            // remote est connecté
+            // remote est connecté mais username déjà utilisé
             case "002":
                 name = received.substring(3);
-
                 // Ajoute émetteur dans la BDD des utilisateurs connectés
-                this.databaseConnectedUsers.addUser(name, String.valueOf(srcAddress));
-                this.mainWindow.addConnectedUser(name);
+                if(!this.databaseConnectedUsers.contains(name)){
+                    this.databaseConnectedUsers.addUser(name, String.valueOf(srcAddress));
+                    this.mainWindow.addConnectedUser(name);
+                }
+                this.askForNewUsername();
                 break;
 
-            // Remote change username
+            // remote est connecté et username ok
             case "003":
-                try {
-                    this.databaseConnectedUsers.changeUsername(String.valueOf(srcAddress), received.substring(3),"ezc"); // TODO récupérer ancien et new nom
-                } catch (UsernameManagementException e) {
-                    ClientUDP.sendMessage(FormatServiceMessage.msgUsernameAlreadyUsed(), srcAddress);
+                name = received.substring(3);
+                // Ajoute émetteur dans la BDD des utilisateurs connectés
+                if(!this.databaseConnectedUsers.contains(name)){
+                    this.databaseConnectedUsers.addUser(name, String.valueOf(srcAddress));
+                    this.mainWindow.addConnectedUser(name);
                 }
                 break;
 
-            // remote réponds à "003" envoyé par local :  username indisponible
+            // remote partage nouveau username
             case "004":
-                // TODO afficher GUI "rentrez un autre username"
+                int index = received.indexOf(':');
+                name = received.substring(3, index);
+                String newUSername = received.substring(index+1);
+
+                try {
+                    if(this.databaseConnectedUsers.contains(name)){
+                        this.databaseConnectedUsers.changeUsername(String.valueOf(srcAddress), name, newUSername);
+                    }
+                    db.updateTable(name, newUSername);
+                } catch (UsernameManagementException e) {
+                    ClientUDP.sendMessage(FormatServiceMessage.msgUsernameKO(), srcAddress);
+                }
                 break;
 
             // remote se déconnecte
             case "005":
-                //TODO remove try catch and exception throwing
                 name = received.substring(3);
 
                 try {
                     databaseConnectedUsers.removeUser(name);
+                    //TODO mise à jour GUI
                 } catch (UsernameManagementException e) {
                     throw new RuntimeException(e);
                 }
                 break;
-
-            // remote demande port TCP
-            case "006":
-                msg = FormatServiceMessage.msgRespondPort(String.valueOf(ThreadManager.port));
-                ClientUDP.sendMessage(msg, srcAddress);
-                break;
-
-            // remote indique port TCP
-            case "007": // TODO ajout dans bdd locale (à créer)
-                int port = Integer.parseInt(received.substring(3));
-                PendingMessage toSend = this.pendingMessages.remove();
-                if(toSend.getAddr().equals(srcAddress)) {
-                    String username = databaseConnectedUsers.getUsername(String.valueOf(srcAddress));
-                    ClientTCP.sendMessage(toSend.getMsg(), srcAddress, port, username);
-                }
-                activConversation.put(srcAddress, port);
-                //TODO else catch exception
-                break;
             default:
                 System.out.println("Error, unknown control code : " + code);
         }
+    }
+
+    private void askForNewUsername() {
     }
 
 
@@ -172,7 +166,6 @@ public class NetworkManager {
         if(mainWindow.getDest().equals(username)){
             mainWindow.displayMessage(msg, dateFormat.format(date), 2);
         }
-
     }
 
 
@@ -190,28 +183,16 @@ public class NetworkManager {
         try {
             // Resolve address based on username
             address = InetAddress.getByName(databaseConnectedUsers.getAddress(username).substring(1));
+            if(username.equals("BBB")){
+                ClientTCP.sendMessage(msg, address, 6500, username);
+            } else if(username.equals("AAA")){
+                ClientTCP.sendMessage(msg, address, 5500, username);
+            } else {
+                ClientTCP.sendMessage(msg, address, 5555, username);
+            }
         } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
+            new AlertWindow("Il semble que cet utilisateur ne soit pas connecté.");
         }
-
-        //TODO
-        if(username.equals("BBB")){
-            ClientTCP.sendMessage(msg, address, 6500, username);
-        } else if(username.equals("AAA")){
-            ClientTCP.sendMessage(msg, address, 5500, username);
-        } else {
-            ClientTCP.sendMessage(msg, address, 5555, username);
-        }
-
-
-/*
-        if(activConversation.containsKey(address)){
-            port = activConversation.get(address);
-            ClientTCP.sendMessage(msg, address, port, username);
-        } else {
-            pendingMessages.add(new PendingMessage(address, msg));
-            ClientUDP.sendMessage(FormatServiceMessage.msgAskPort(), address);
-        }*/
     }
 
      /*

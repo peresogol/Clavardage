@@ -21,17 +21,17 @@ public class MainWindow {
     private JPanel top, bottom, right, left, center;
     private JFrame frame;
     private JLabel topLabel;
+    private JButton changeUsernameButton;
     private LinkedList<String> listConnectedUsersDisplayed;
-
     private String currentConversation;
 
     /////////////////////////////////////////
     ////////// Create GUI skeleton //////////
     /////////////////////////////////////////
-    public MainWindow(String wd){
+    public MainWindow(String username){
         this.listConnectedUsersDisplayed = new LinkedList<>();
-        this.listConnectedUsersDisplayed.add(wd); // Empêche au programme de s'afficher dans la liste des utilisateurs connectés
-        this.frame = new JFrame(wd);
+        this.listConnectedUsersDisplayed.add(username); // Empêche au programme de s'afficher dans la liste des utilisateurs connectés
+        this.frame = new JFrame(username);
         this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -40,15 +40,33 @@ public class MainWindow {
         ////////// Container creation //////////
         ////////////////////////////////////////
 
-        topLabel = new JLabel("");
+       /* topLabel = new JLabel("");
         this.top = new JPanel();
         this.top.setPreferredSize(new Dimension(300, 70));
         this.top.add(topLabel);
+*/
+        this.top = new JPanel(new BorderLayout());
+        topLabel = new JLabel("", SwingConstants.CENTER);
+        this.top.add(topLabel, BorderLayout.CENTER);
+        changeUsernameButton = new JButton(username);
+        changeUsernameButton.setPreferredSize(new Dimension(300, 50));
+        this.top.add(changeUsernameButton, BorderLayout.WEST);
+        JButton paddingButton = new JButton("");                                            // Allow to center the label
+        paddingButton.setPreferredSize(new Dimension(300, 50));
+        paddingButton.setOpaque(false);                                                         // rends le bouton invisible mais permet de maintenir occupé l'espace situé à son emplacement
+        paddingButton.setContentAreaFilled(false);
+        paddingButton.setBorderPainted(false);
+        this.top.add(paddingButton, BorderLayout.EAST);
         this.frame.getContentPane().add(this.top, BorderLayout.NORTH);
+
+
+
 
         this.left = new JPanel();
         this.left.setPreferredSize(new Dimension(300, 3000));
         this.left.setLayout(new FlowLayout());
+        JLabel convLabel = new JLabel("Conversations :");
+        this.left.add(convLabel);
         //JScrollPane leftScrollPane = new JScrollPane(left);
         //leftScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         //this.frame.add(leftScrollPane, BorderLayout.WEST);
@@ -62,6 +80,8 @@ public class MainWindow {
         this.right = new JPanel();
         this.right.setPreferredSize(new Dimension(300, 3000));
         this.right.setLayout(new FlowLayout());
+        JLabel coLabel = new JLabel("Connectés :");
+        this.right.add(coLabel);
         //JScrollPane rightScrollPane = new JScrollPane(right);
         //rightScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         //this.frame.add(rightScrollPane, BorderLayout.EAST);

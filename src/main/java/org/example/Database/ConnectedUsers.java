@@ -64,6 +64,10 @@ public class ConnectedUsers {
         }
         return res;
     }
+
+    public boolean contains(String username){
+        return this.connectedUsers.containsKey(username);
+    }
 }
 
 
