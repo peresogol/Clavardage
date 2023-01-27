@@ -1,0 +1,252 @@
+@startuml
+
+/' diagram meta data start
+config=CallConfiguration;
+{
+  "rootMethod": "org.example.NetworkManager.ServeurTCP#run()",
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showMethodParametersTypes": false,
+    "showMethodParametersNames": false,
+    "showMethodReturnType": false,
+    "showPackageLevels": 2,
+    "showCallOrder": false,
+    "edgeMode": "MethodsOnly", // TypesOnly, MethodsOnly, TypesAndMethods, MethodsAndDirectTypeUsage
+    "showDetailedClassStructure": false
+  },
+  "rootClass": "org.example.NetworkManager.ServeurTCP",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="LR"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1322970774 { 
+   	label=example
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_1944040809 { 
+   	label=GUI
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_1100231978 { 
+   	label=MainWindow
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   MainWindow1873443469XXXaddConversations1808118735[
+	label="+ addConversations()"
+	style=filled
+	fillcolor=white
+	tooltip="MainWindow
+
+null"
+	fontcolor=darkgreen
+];
+
+MainWindow1873443469XXXdisplayMessage1468174875[
+	label="+ displayMessage()"
+	style=filled
+	fillcolor=white
+	tooltip="MainWindow
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+
+subgraph cluster_206417603 { 
+   	label=NetworkManager
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_1047325174 { 
+   	label=ServeurTCP
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ServeurTCP1888815373XXXrun0[
+	label="+ run()"
+	style=filled
+	fillcolor=white
+	tooltip="ServeurTCP
+
+null"
+	penwidth=4
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_34530112 { 
+   	label=NetworkManager
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   NetworkManager1888815373XXXcreateTable1808118735[
+	label="+ createTable()"
+	style=filled
+	fillcolor=white
+	tooltip="NetworkManager
+
+null"
+	fontcolor=darkgreen
+];
+
+NetworkManager1888815373XXXgetUsernameFromAddress1808118735[
+	label="+ getUsernameFromAddress()"
+	style=filled
+	fillcolor=white
+	tooltip="NetworkManager
+
+null"
+	fontcolor=darkgreen
+];
+
+NetworkManager1888815373XXXhandleReceivedMessage2013066710[
+	label="+ handleReceivedMessage()"
+	style=filled
+	fillcolor=white
+	tooltip="NetworkManager
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+
+subgraph cluster_499757665 { 
+   	label=Database
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   subgraph cluster_592411196 { 
+   	label=ConnectedUsers
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   ConnectedUsers2088347497XXXgetUsername1808118735[
+	label="+ getUsername()"
+	style=filled
+	fillcolor=white
+	tooltip="ConnectedUsers
+
+null"
+	fontcolor=darkgreen
+];
+} 
+
+subgraph cluster_772499231 { 
+   	label=DatabaseMsg
+	labeljust=l
+	fillcolor=white
+	style=filled
+   
+   DatabaseMsg2088347497XXXcreateTableMessage1808118735[
+	label="+ createTableMessage()"
+	style=filled
+	fillcolor=white
+	tooltip="DatabaseMsg
+
+null"
+	fontcolor=darkgreen
+];
+
+DatabaseMsg2088347497XXXinsertMessage1468174875[
+	label="+ insertMessage()"
+	style=filled
+	fillcolor=white
+	tooltip="DatabaseMsg
+
+null"
+	fontcolor=darkgreen
+];
+} 
+} 
+} 
+
+'edges    
+NetworkManager1888815373XXXcreateTable1808118735 -> DatabaseMsg2088347497XXXcreateTableMessage1808118735;
+NetworkManager1888815373XXXcreateTable1808118735 -> MainWindow1873443469XXXaddConversations1808118735;
+NetworkManager1888815373XXXgetUsernameFromAddress1808118735 -> ConnectedUsers2088347497XXXgetUsername1808118735;
+NetworkManager1888815373XXXhandleReceivedMessage2013066710 -> DatabaseMsg2088347497XXXinsertMessage1468174875;
+NetworkManager1888815373XXXhandleReceivedMessage2013066710 -> MainWindow1873443469XXXdisplayMessage1468174875;
+NetworkManager1888815373XXXhandleReceivedMessage2013066710 -> NetworkManager1888815373XXXcreateTable1808118735;
+ServeurTCP1888815373XXXrun0 -> NetworkManager1888815373XXXgetUsernameFromAddress1808118735;
+ServeurTCP1888815373XXXrun0 -> NetworkManager1888815373XXXhandleReceivedMessage2013066710;
+    
+}
+@enduml
